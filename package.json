@@ -1,0 +1,21 @@
+{
+  "name": "@narby-me/react-table",
+  "version": "0.0.1",
+  "description": "React Table",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "build": "npx tsc -p ."
+  },
+  "peerDependencies": {
+    "react": ">=18.2.0"
+  },
+  "keywords": [],
+  "author": "Edinson Salas<edinsonsalas@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^18.2.79",
+    "react": "^18.2.0",
+    "typescript": "^5.4.5"
+  }
+}
