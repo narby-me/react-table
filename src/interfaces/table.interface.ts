@@ -1,35 +1,63 @@
-import { FunctionComponent, ReactNode } from "react";
-import { CellComponentProps, ICell } from "./cell.interface";
-import { RowComponentProps } from "./row.interface";
+import { Dispatch, FunctionComponent, ReactNode, SetStateAction } from "react";
+import { CellComponentProps, ICell, ICellExtended, RenderCell, SortDirection } from "./cell.interface";
+import { RowComponentProps, TRowModelExtension } from "./row.interface";
+import { HeaderComponentProps } from "./header.interface";
+import { BodyComponentProps } from "./body.interface";
+import { FooterComponentProps } from "./footer.interface";
 
-export interface TableComponentProps<TableType> {
+export interface TableComponentProps {
   children: ReactNode;
 }
 
-export interface TableProviderProps<TableType, RowType, CellType> {
+export interface TableProviderProps<TModel> {
   children: ReactNode;
-  TableComponent: FunctionComponent<TableComponentProps<TableType>>;
-  RowComponent: FunctionComponent<RowComponentProps<RowType>>;
-  CellComponent: FunctionComponent<CellComponentProps<CellType>>;
+  TableComponent: FunctionComponent<TableComponentProps>;
+  RowComponent: FunctionComponent<RowComponentProps>;
+  CellComponent: FunctionComponent<CellComponentProps>;
+  HeaderComponent: FunctionComponent<HeaderComponentProps>;
+  BodyComponent: FunctionComponent<BodyComponentProps>;
+  FooterComponent: FunctionComponent<FooterComponentProps>;
+  render: Record<string, (props: RenderCell<TModel>) => JSX.Element>;
 }
 
-export type ContextType<TableType, RowType, CellType> = {
-  TableComponent: FunctionComponent<TableComponentProps<TableType>>;
-  RowComponent: FunctionComponent<RowComponentProps<RowType>>;
-  CellComponent: FunctionComponent<CellComponentProps<CellType>>;
+export type ContextType<TModel> = {
+  TableComponent: FunctionComponent<TableComponentProps>;
+  RowComponent: FunctionComponent<RowComponentProps>;
+  CellComponent: FunctionComponent<CellComponentProps>;
+  HeaderComponent: FunctionComponent<HeaderComponentProps>;
+  BodyComponent: FunctionComponent<BodyComponentProps>;
+  FooterComponent: FunctionComponent<FooterComponentProps>;
+  render: Record<string, (props: RenderCell<TModel>) => JSX.Element>;
 };
 
-export interface TableQuery<TModel> {
-  take?: number;
-  skip?: number;
+export interface TableQuery<TModel extends TRowModelExtension> {
+  page?: number;
+  pageSize?: number;
+  sort?: Record<keyof TModel, SortDirection>;
 }
 
-export interface TableData<TModel> {
-  total: number;
+export interface TableData<TModel extends TRowModelExtension> {
+  totalPages: number;
+  currentPage: number;
+  pageSize: number;
+  totalRows?: number;
   data: TModel[];
 }
 
-export interface TableProps<TModel> {
+export interface UseTableProps<TModel extends TRowModelExtension> {
   fetch: (query: TableQuery<TModel>) => Promise<TableData<TModel>>;
   columns: ICell<TModel>[];
+}
+
+export interface UseTableValues<TModel extends TRowModelExtension> {
+  data?: TableData<TModel>;
+  isLoading: boolean;
+  columns: ICell<TModel>[];
+  refetch: () => Promise<void>;
+  setQuery: Dispatch<SetStateAction<TableQuery<TModel>>>;
+}
+
+export interface TableProps<TModel extends TRowModelExtension> {
+  columns: ICellExtended<TModel>[];
+  data: TableData<TModel>;
 }

@@ -1,43 +1,63 @@
 import React, { Context, FunctionComponent } from "react";
-import { CellComponentProps, ContextType, TableComponentProps, TableProps, TableProviderProps } from "../interfaces";
+import { BodyComponentProps, CellComponentProps, ContextType, FooterComponentProps, HeaderComponentProps, HeaderProps, TableComponentProps, TableProps, TableProviderProps } from "../interfaces";
 import { RowComponentProps } from "../interfaces/row.interface";
 
-function Table<TableType>(props: TableComponentProps<TableType>) {
+function Table(props: TableComponentProps) {
   return <table {...props} />;
 }
 
-function Row<RowType>(props: RowComponentProps<RowType>) {
+function Row(props: RowComponentProps) {
   return <tr {...props} />;
 }
 
-function Cell<CellType>(props: CellComponentProps<CellType>) {
-  return <td {...props} />;
+function Cell(props: CellComponentProps) {
+  return <td>{props.children}</td>;
 }
 
-const INITIAL_STATE: ContextType<any, any, any> = {
+function Header(props: HeaderComponentProps) {
+  return <thead {...props} />
+}
+
+function Body(props: BodyComponentProps) {
+  return <tbody {...props} />
+}
+
+function Footer(props: FooterComponentProps) {
+  return <tfoot {...props} />;
+}
+
+const INITIAL_STATE: ContextType<any> = {
   TableComponent: Table,
   RowComponent: Row,
-  CellComponent: Cell
+  CellComponent: Cell,
+  HeaderComponent: Header,
+  BodyComponent: Body,
+  FooterComponent: Footer,
+  render: {},
 };
 
-const Context = React.createContext<ContextType<any, any, any>>(INITIAL_STATE);
+const Context = React.createContext<ContextType<any>>(INITIAL_STATE);
 
-export function TableProvider<
-  TableType = HTMLTableElement,
-  RowType = HTMLTableRowElement,
-  CellType = HTMLTableCellElement,
->({
+export function TableProvider<TModel>({
   children,
+  render,
   TableComponent,
   CellComponent,
   RowComponent,
-}: TableProviderProps<TableType, RowType, CellType>) {
+  HeaderComponent,
+  BodyComponent,
+  FooterComponent,
+}: TableProviderProps<TModel>) {
   return (
     <Context.Provider
       value={{
         TableComponent,
         CellComponent,
-        RowComponent
+        RowComponent,
+        HeaderComponent,
+        BodyComponent,
+        FooterComponent,
+        render,
       }}
     >
       {children}
@@ -45,10 +65,6 @@ export function TableProvider<
   );
 }
 
-export function useTableConfig<
-  TableType = HTMLTableElement,
-  RowType = HTMLTableRowElement,
-  CellType = HTMLTableCellElement,
->(): ContextType<TableType, RowType, CellType> {
-  return React.useContext<ContextType<TableType, RowType, CellType>>(Context);
+export function useTableConfig<TModel>(): ContextType<TModel> {
+  return React.useContext<ContextType<TModel>>(Context);
 }

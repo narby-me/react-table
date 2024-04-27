@@ -1,10 +1,19 @@
 import { ReactNode } from "react";
 
-export interface CellComponentProps<CellType> {
-  children: ReactNode;
-}
-
 export type SortDirection = "asc" | "desc";
+
+export type CellType = {
+  asHeader: true;
+  direction?: SortDirection;
+  prefix: ReactNode;
+  actions: ReactNode;
+} | {
+  asHeader: false;
+};
+
+export type CellComponentProps = {
+  children: ReactNode;
+} & CellType;
 
 export interface SortDataProps<TModel> {
   data: TModel[];
@@ -19,6 +28,12 @@ export interface HeaderProps<TModel> {
   sortData?: (props: SortDataProps<TModel>) => Promise<TModel[]>;
 }
 
+export type ExtendedHeaderProps = {
+  sort?: {
+    direction?: SortDirection;
+  };
+};
+
 export interface RenderCell<TModel> {
   key: keyof TModel;
   item: TModel;
@@ -28,5 +43,9 @@ export interface RenderCell<TModel> {
 export interface ICell<TModel> {
   key: keyof TModel;
   header: HeaderProps<TModel>;
-  render: (props: RenderCell<TModel>) => JSX.Element;
+  render: string | ((props: RenderCell<TModel>) => JSX.Element);
+}
+
+export interface ICellExtended<TModel> extends ICell<TModel> {
+  header: HeaderProps<TModel> & ExtendedHeaderProps;
 }

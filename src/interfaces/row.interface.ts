@@ -1,6 +1,10 @@
 import { ReactNode } from "react";
 
-export interface RowComponentProps<RowType> {
+export interface TRowModelExtension {
+  id: number | string;
+}
+
+export interface RowComponentProps {
   children: ReactNode;
   selected?: boolean;
 }
