@@ -43,7 +43,7 @@ export interface RenderCell<TModel> {
 export interface ICell<TModel> {
   key: keyof TModel;
   header: HeaderProps<TModel>;
-  render: string | ((props: RenderCell<TModel>) => JSX.Element);
+  render?: string | ((props: RenderCell<TModel>) => JSX.Element);
 }
 
 export interface ICellExtended<TModel> extends ICell<TModel> {

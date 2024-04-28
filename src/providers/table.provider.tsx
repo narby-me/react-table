@@ -40,13 +40,13 @@ const Context = React.createContext<ContextType<any>>(INITIAL_STATE);
 
 export function TableProvider<TModel>({
   children,
-  render,
-  TableComponent,
-  CellComponent,
-  RowComponent,
-  HeaderComponent,
-  BodyComponent,
-  FooterComponent,
+  render = {},
+  TableComponent = Table,
+  CellComponent = Cell,
+  RowComponent = Row,
+  HeaderComponent = Header,
+  BodyComponent = Body,
+  FooterComponent = Footer,
 }: TableProviderProps<TModel>) {
   return (
     <Context.Provider

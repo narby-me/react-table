@@ -11,13 +11,13 @@ export interface TableComponentProps {
 
 export interface TableProviderProps<TModel> {
   children: ReactNode;
-  TableComponent: FunctionComponent<TableComponentProps>;
-  RowComponent: FunctionComponent<RowComponentProps>;
-  CellComponent: FunctionComponent<CellComponentProps>;
-  HeaderComponent: FunctionComponent<HeaderComponentProps>;
-  BodyComponent: FunctionComponent<BodyComponentProps>;
-  FooterComponent: FunctionComponent<FooterComponentProps>;
-  render: Record<string, (props: RenderCell<TModel>) => JSX.Element>;
+  TableComponent?: FunctionComponent<TableComponentProps>;
+  RowComponent?: FunctionComponent<RowComponentProps>;
+  CellComponent?: FunctionComponent<CellComponentProps>;
+  HeaderComponent?: FunctionComponent<HeaderComponentProps>;
+  BodyComponent?: FunctionComponent<BodyComponentProps>;
+  FooterComponent?: FunctionComponent<FooterComponentProps>;
+  render?: Record<string, (props: RenderCell<TModel>) => JSX.Element>;
 }
 
 export type ContextType<TModel> = {

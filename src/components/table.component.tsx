@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { TRowModelExtension, TableProps } from "../interfaces";
+import { ICellExtended, TRowModelExtension, TableProps } from "../interfaces";
 import { useTableConfig } from "../providers";
 
 export function Table<TModel extends TRowModelExtension>({ columns, data }: TableProps<TModel>) {
@@ -18,6 +18,14 @@ export function Table<TModel extends TRowModelExtension>({ columns, data }: Tabl
       .sort((a, b) => a.header.order - b.header.order)
     , [columns],
   );
+
+  const renderCell = (row: TModel & TRowModelExtension, column: ICellExtended<TModel>) => {
+    if (!column.render) return String(row[column.key]);
+
+    return typeof column.render === "string"
+      ? render[column.render]({ key: column.key, item: row, value: row[column.key] })
+      : column.render({ key: column.key, item: row, value: row[column.key] })
+  }
 
   return (
     <TableComponent>
@@ -45,11 +53,7 @@ export function Table<TModel extends TRowModelExtension>({ columns, data }: Tabl
                   asHeader={false}
                   key={index}
                 >
-                  {
-                    typeof column.render === "string"
-                      ? render[column.render]({ key: column.key, item: row, value: row[column.key] })
-                      : column.render({ key: column.key, item: row, value: row[column.key] })
-                  }
+                  {renderCell(row, column)}
                 </CellComponent>
               ))
             }

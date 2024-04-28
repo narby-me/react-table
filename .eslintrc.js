@@ -1,4 +1,13 @@
 module.exports = {
+  "overrides": [
+    {
+      "files": ["**/*.test.ts?(x)"],
+      "plugins": ["jest"],
+      "env": {
+        "jest/globals": true
+      }
+    }
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: 'tsconfig.json',
