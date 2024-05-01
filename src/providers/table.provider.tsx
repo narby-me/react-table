@@ -1,5 +1,5 @@
-import React, { Context, FunctionComponent } from "react";
-import { BodyComponentProps, CellComponentProps, ContextType, FooterComponentProps, HeaderComponentProps, HeaderProps, TableComponentProps, TableProps, TableProviderProps } from "../interfaces";
+import React, { Context } from "react";
+import { BodyComponentProps, CellComponentProps, ContextType, FooterComponentProps, HeaderComponentProps, TableComponentProps, TableProviderProps } from "../interfaces";
 import { RowComponentProps } from "../interfaces/row.interface";
 
 function Table(props: TableComponentProps) {
